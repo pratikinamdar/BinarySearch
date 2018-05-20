@@ -1,0 +1,74 @@
+
+//Find the element that occurs more than N/4 times in a sorted array having N integers in Log(N) time complexity. Assume these is just one such element or none.
+#include <iostream>
+using namespace std;
+
+int countOccurence(int *arr, int n, int element, int flag)
+{
+    int low = 0; int high = n-1;
+    int mid;
+    int result =-1;
+    while(low<=high)
+    {
+        mid = low+(high-low)/2;
+        if(arr[mid]==element)
+        {
+            result = mid;
+            if(flag == 1)
+            {
+                high = mid-1;
+            }
+            else
+            {
+                low = mid+1;
+            }
+            
+        }
+        else if(arr[mid]<element)
+        low = mid+1;
+        else
+        {
+            high = mid-1;
+        }
+    }
+    return result;
+}
+
+int findElementOccuringMoreThanNby4TimesInASortedArray(int *arr, int n)
+{ 
+//if an element occurs more than N/4 times in a sorted array then it must be present at-least in one of these 3 array indices n/4, n/2, 3n/4
+    
+    int first;
+    int last;
+    int targetOccurences = n/4+1;
+    for(int i=n/4;i<n;i=i+(n/4))
+    {
+        
+       first =  countOccurence(arr, n, arr[i], true);
+       if(first == -1)
+       {
+           continue;
+       }
+       else
+       {
+           last =  countOccurence(arr, n, arr[i], false);  
+       }
+       
+       if((last-first+1)>=targetOccurences)
+       return arr[i];
+      
+    }
+    return -1;
+  
+}
+
+
+
+int main()
+{              //0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22    
+    int arr[] = {1,2,2, 3, 4, 5, 5, 5, 6, 6, 6, 7, 7, 8};
+ // cout<<sizeof(arr)/sizeof(arr[0]);
+   cout<<findElementOccuringMoreThanNby4TimesInASortedArray(arr,sizeof(arr)/sizeof(arr[0]));
+
+    return 0;
+}
