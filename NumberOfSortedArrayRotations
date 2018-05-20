@@ -1,0 +1,52 @@
+
+//Find minimum element in a circularly sorted array, return the index of the minimum element else return -1
+//Find the how many times a sorted array is rotated
+#include <iostream>
+
+using namespace std;
+
+
+int findMinimumElementInACircularlySortedArray(int *arr, int n)
+{
+    int mid; int prev; int next;
+    int high = n-1; int low = 0;
+    
+     //if the array is not rotated at all then the minimum element is present at index 0
+    if(arr[low]<=arr[high])
+        {
+            return 0;
+        }
+    while(low<=high)
+    {
+        mid = low+(high-low)/2;
+        prev = (mid+n-1)%n;
+        next = (mid+1)%n;
+        //if the middle element is less than its neighbours then that is our target index
+        if(arr[mid]<=arr[prev] && arr[mid]<=arr[next])
+        {
+            return mid;
+        }
+        
+        //Check if the element is present in the lower valued set of element(s)
+        if(arr[mid]<=arr[high])
+        {
+            high = mid-1;
+        }
+           //Check if the element is present in the higher valued set of element(s)
+        else if(arr[mid]>=arr[low])
+        {
+            low = mid+1;
+        }
+       
+    }
+     return -1;
+    
+}
+
+int main()
+{
+    int arr[] = {4,1,2,3};
+    cout<<findMinimumElementInACircularlySortedArray(arr, sizeof(arr)/sizeof(arr[0]));
+
+    return 0;
+}
