@@ -1,0 +1,47 @@
+
+//Find the maximum element in an array that had increasing sequence followed by a decreasing sequence. Either of the 2 sequences may be absent at times. Do this with O(logn) time complexity
+#include <iostream>
+using namespace std;
+
+int findMaxInAnIncreasingAndDecreasingSubSequence(int *arr, int n)
+{
+    int low = 0; int high = n-1;
+    
+    int mid, next, prev;
+    while(low<=high)
+    {
+        mid = low+(high-low)/2;
+        //setting next and prev index with respect to mid. This is '%' by n so that we return to the first/last element instead of the index becoming negative when we are on the cornet element.
+        next=(mid+1)%n;
+        prev=(mid-1+n)%n;
+        
+        //largest element in such array will be larger than its neighbours, since this is a increasing-decreasing subsequence with no repeatitions, thre will just be one such element
+        if(arr[mid]>=arr[prev] && arr[mid]>=arr[next])
+        return mid;
+        
+        
+        //if middle element is smaller than tis previous element than the max element exists in the left part of middle element
+        else if(arr[mid]<arr[prev])
+        {
+            high = mid-1;
+        }
+        
+        // we know middle element in this case itnt the largest and we also know that mid is greater than previous and so to find the largest we need to go right
+        else if (arr[mid]>arr[prev])
+        {
+            low = mid+1;
+        }
+    }
+    return -1;
+}
+
+
+
+int main()
+{     
+    int arr[] = {6};
+
+   cout<<findMaxInAnIncreasingAndDecreasingSubSequence(arr,sizeof(arr)/sizeof(arr[0]));
+
+    return 0;
+}
